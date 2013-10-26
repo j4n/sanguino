@@ -196,6 +196,13 @@ mega_isp: LFUSE = FF
 mega_isp: EFUSE = F5
 mega_isp: isp
 
+atmega324p: TARGET = atmega324p
+atmega324p: MCU_TARGET = atmega324p
+atmega324p: CFLAGS += '-DMAX_TIME_COUNT=F_CPU>>4' '-DNUM_LED_FLASHES=5' '-DBAUD_RATE=57600'
+atmega324p: AVR_FREQ = 16000000L
+atmega324p: LDSECTION  = --section-start=.text=0xF800
+atmega324p: $(PROGRAM)_atmega324p.hex
+
 atmega1284p: TARGET = atmega1284p
 atmega1284p: MCU_TARGET = atmega1284p
 atmega1284p: CFLAGS += '-DMAX_TIME_COUNT=F_CPU>>4' '-DNUM_LED_FLASHES=0' '-DBAUD_RATE=57600'

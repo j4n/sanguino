@@ -117,7 +117,7 @@
 #define BL1     PINF6
 #elif defined __AVR_ATmega1280__ 
 /* we just don't do anything for the MEGA and enter bootloader on reset anyway*/
-#elif defined __AVR_ATmega1284P_ || defined __AVR_ATmega644P__
+#elif defined __AVR_ATmega1284P_ || defined __AVR_ATmega644P__ || defined __AVR_ATmega324P__
 
 #else
 /* other ATmegas have only one UART, so only one pin is defined to enter bootloader */
@@ -136,7 +136,7 @@
 #define LED_PORT PORTB
 #define LED_PIN  PINB
 #define LED      PINB7
-#elif defined __AVR_ATmega1284P__ || defined __AVR_ATmega644P__
+#elif defined __AVR_ATmega1284P__ || defined __AVR_ATmega644P__ || defined __AVR_ATmega324P__
 #define LED_DDR  DDRB
 #define LED_PORT PORTB
 #define LED_PIN  PINB
@@ -181,10 +181,15 @@
 #define SIG3    0x0A
 #define PAGE_SIZE       0x080U   //128 words
 
-#elif defined __AVR_ATmega128__
+#elif defined __AVR_ATmega644P__
+#define SIG2    0x95
+#define SIG3    0x08
+#define PAGE_SIZE       0x080U   //128 words
+
+#elif defined __AVR_ATmega324P__
 #define SIG2	0x97
 #define SIG3	0x02
-#define PAGE_SIZE	0x80U	//128 words
+#define PAGE_SIZE	0x40U	//128 words
 
 #elif defined __AVR_ATmega64__
 #define SIG2	0x96
@@ -366,7 +371,7 @@ int main(void)
 
 
 	/* initialize UART(s) depending on CPU defined */
-#if defined(__AVR_ATmega128__) || defined(__AVR_ATmega1280__)  || defined(__AVR_ATmega1284P__) || defined(__AVR_ATmega644P__)
+#if defined(__AVR_ATmega128__) || defined(__AVR_ATmega1280__)  || defined(__AVR_ATmega1284P__) || defined(__AVR_ATmega644P__) || defined(__AVR_ATmega324P__)
 	if(bootuart == 1) {
 		UBRR0L = (uint8_t)(F_CPU/(BAUD_RATE*16L)-1);
 		UBRR0H = (F_CPU/(BAUD_RATE*16L)-1) >> 8;
@@ -435,7 +440,7 @@ int main(void)
 
 
 	/* flash onboard LED to signal entering of bootloader */
-#if defined(__AVR_ATmega128__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega1284P__) || defined(__AVR_ATmega644P__)
+#if defined(__AVR_ATmega128__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega1284P__) || defined(__AVR_ATmega644P__) || defined(__AVR_ATmega324P__)
 	// 4x for UART0, 5x for UART1
 	flash_led(NUM_LED_FLASHES + bootuart);
 #else
@@ -597,7 +602,7 @@ int main(void)
 				/* if ((length.byte[0] & 0x01) == 0x01) length.word++;	//Even up an odd number of bytes */
 				if ((length.byte[0] & 0x01)) length.word++;	//Even up an odd number of bytes
 				cli();					//Disable interrupts, just to be sure
-#if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega1281__) || defined(__AVR_ATmega1284P__) || defined(__AVR_ATmega644P__)
+#if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega1281__) || defined(__AVR_ATmega1284P__) || defined(__AVR_ATmega644P__) || defined(__AVR_ATmega324P__)
 				while(bit_is_set(EECR,EEPE));			//Wait for previous EEPROM writes to complete
 #else
 				while(bit_is_set(EECR,EEWE));			//Wait for previous EEPROM writes to complete
@@ -696,7 +701,7 @@ int main(void)
 					 "rjmp	write_page	\n\t"
 					 "block_done:		\n\t"
 					 "clr	__zero_reg__	\n\t"	//restore zero register
-#if defined __AVR_ATmega168__  || __AVR_ATmega328P__ || __AVR_ATmega128__ || __AVR_ATmega1280__ || __AVR_ATmega1281__ || __AVR_ATmega1284P__ || __AVR_ATmega644P__
+#if defined __AVR_ATmega168__  || __AVR_ATmega328P__ || __AVR_ATmega128__ || __AVR_ATmega1280__ || __AVR_ATmega1281__ || __AVR_ATmega1284P__ || __AVR_ATmega644P__ || __AVR_ATmega324P__
 					 : "=m" (SPMCSR) : "M" (PAGE_SIZE) : "r0","r16","r17","r24","r25","r28","r29","r30","r31"
 #else
 					 : "=m" (SPMCR) : "M" (PAGE_SIZE) : "r0","r16","r17","r24","r25","r28","r29","r30","r31"
@@ -936,7 +941,7 @@ void puthex(char ch) {
 
 void putch(char ch)
 {
-#if defined(__AVR_ATmega128__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega1284P__) || defined(__AVR_ATmega644P__)
+#if defined(__AVR_ATmega128__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega1284P__) || defined(__AVR_ATmega644P__) || defined(__AVR_ATmega324P__)
 	if(bootuart == 1) {
 		while (!(UCSR0A & _BV(UDRE0)));
 		UDR0 = ch;
@@ -958,7 +963,7 @@ void putch(char ch)
 
 char getch(void)
 {
-#if defined(__AVR_ATmega128__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega1284P__) || defined(__AVR_ATmega644P__)
+#if defined(__AVR_ATmega128__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega1284P__) || defined(__AVR_ATmega644P__) || defined(__AVR_ATmega324P__)
 	uint32_t count = 0;
 	if(bootuart == 1) {
 		while(!(UCSR0A & _BV(RXC0))) {
@@ -1011,7 +1016,7 @@ char getch(void)
 void getNch(uint8_t count)
 {
 	while(count--) {
-#if defined(__AVR_ATmega128__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega1284P__) || defined(__AVR_ATmega644P__)
+#if defined(__AVR_ATmega128__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega1284P__) || defined(__AVR_ATmega644P__) || defined(__AVR_ATmega324P__)
 		if(bootuart == 1) {
 			while(!(UCSR0A & _BV(RXC0)));
 			UDR0;

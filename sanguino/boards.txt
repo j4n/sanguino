@@ -61,3 +61,24 @@ atmega1284.build.f_cpu=16000000L
 atmega1284.build.core=arduino
 atmega1284.build.variant=standard
 #
+############################################################
+
+atmega324.name=Sanguino W/ ATmega324P
+
+atmega324.upload.protocol=stk500
+atmega324.upload.maximum_size=63488
+atmega324.upload.speed=57600
+
+atmega324.bootloader.low_fuses=0xFF
+atmega324.bootloader.high_fuses=0x9A
+atmega324.bootloader.extended_fuses=0xFF
+atmega324.bootloader.path=atmega
+atmega324.bootloader.file=ATmegaBOOT_168_atmega324p.hex
+#atmega324.bootloader.file=ATmegaBOOT_644P.hex
+atmega324.bootloader.unlock_bits=0x3F
+atmega324.bootloader.lock_bits=0x0F
+
+atmega324.build.mcu=atmega324p
+atmega324.build.f_cpu=16000000L
+atmega324.build.core=arduino
+atmega324.build.variant=standard

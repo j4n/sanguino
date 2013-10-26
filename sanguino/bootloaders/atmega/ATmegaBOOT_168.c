@@ -181,14 +181,9 @@
 #define SIG3    0x0A
 #define PAGE_SIZE       0x080U   //128 words
 
-#elif defined __AVR_ATmega644P__
+#elif defined __AVR_ATmega324P__
 #define SIG2    0x95
 #define SIG3    0x08
-#define PAGE_SIZE       0x080U   //128 words
-
-#elif defined __AVR_ATmega324P__
-#define SIG2	0x97
-#define SIG3	0x02
 #define PAGE_SIZE	0x40U	//128 words
 
 #elif defined __AVR_ATmega64__

@@ -200,7 +200,7 @@ atmega324p: TARGET = atmega324p
 atmega324p: MCU_TARGET = atmega324p
 atmega324p: CFLAGS += '-DMAX_TIME_COUNT=F_CPU>>4' '-DNUM_LED_FLASHES=5' '-DBAUD_RATE=57600'
 atmega324p: AVR_FREQ = 16000000L
-atmega324p: LDSECTION  = --section-start=.text=0x7800
+atmega324p: LDSECTION  = --section-start=.text=0x1F000
 atmega324p: $(PROGRAM)_atmega324p.hex
 
 atmega1284p: TARGET = atmega1284p

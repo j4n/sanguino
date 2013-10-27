@@ -21,7 +21,7 @@ PROGRAM    = ATmegaBOOT_168
 
 # enter the parameters for the avrdude isp tool
 ISPTOOL	   = stk500v2
-ISPPORT	   = usb
+ISPPORT	   = /dev/ttyUSB0
 ISPSPEED   = -b 115200
 
 MCU_TARGET = atmega168
@@ -205,13 +205,13 @@ atmega324p: AVR_FREQ = 16000000L
 atmega324p: LDSECTION  = --section-start=.text=0x3E00 
 atmega324p: $(PROGRAM)_atmega324p.hex
 
-atmega324_isp: atmega324p
-atmega324_isp: TARGET = atmega324p
-atmega324_isp: MCU_TARGET = atmega324p
-atmega324_isp: HFUSE = 9A
-atmega324_isp: LFUSE = E0
-atmega324_isp: EFUSE = FF
-atmega324_isp: isp
+atmega324p_isp: atmega324p
+atmega324p_isp: TARGET = atmega324p
+atmega324p_isp: MCU_TARGET = atmega324p
+atmega324p_isp: HFUSE = 9A
+atmega324p_isp: LFUSE = E0
+atmega324p_isp: EFUSE = FF
+atmega324p_isp: isp
 
 atmega1284p: TARGET = atmega1284p
 atmega1284p: MCU_TARGET = atmega1284p

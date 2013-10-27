@@ -200,8 +200,18 @@ atmega324p: TARGET = atmega324p
 atmega324p: MCU_TARGET = atmega324p
 atmega324p: CFLAGS += '-DMAX_TIME_COUNT=F_CPU>>4' '-DNUM_LED_FLASHES=5' '-DBAUD_RATE=57600'
 atmega324p: AVR_FREQ = 16000000L
-atmega324p: LDSECTION  = --section-start=.text=0x3C00
+# AVR 8011: Table 23-10. Boot Size Configuration
+# http://andrewbrobinson.com/2010/12/05/optiboot-on-atmega324p/ =0x7e00
+atmega324p: LDSECTION  = --section-start=.text=0x3E00 
 atmega324p: $(PROGRAM)_atmega324p.hex
+
+atmega324_isp: atmega324p
+atmega324_isp: TARGET = atmega324p
+atmega324_isp: MCU_TARGET = atmega324p
+atmega324_isp: HFUSE = 9A
+atmega324_isp: LFUSE = E0
+atmega324_isp: EFUSE = FF
+atmega324_isp: isp
 
 atmega1284p: TARGET = atmega1284p
 atmega1284p: MCU_TARGET = atmega1284p
